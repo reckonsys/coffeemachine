@@ -1,0 +1,20 @@
+version: '3'
+
+volumes:
+  mongo_data: {}
+  traefik_acme: {}
+  rabbitmq_data: {}
+  postgres_data: {}
+
+services:
+
+  openvpn:
+    env_file: .env
+    image: kylemanna/openvpn
+    restart: always
+    cap_add:
+     - NET_ADMIN
+    ports:
+     - "1194:1194/udp"
+    volumes:
+     - ./openvpn-data/conf:/etc/openvpn
