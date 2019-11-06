@@ -31,3 +31,5 @@ How to install those?
 
 
 And that is how you optimize your Coffee Machine.
+
+Detailed installation docs available here: https://github.com/reckonsys/bigga
