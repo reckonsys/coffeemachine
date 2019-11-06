@@ -32,9 +32,6 @@ How to install those?
 
 And that is how you optimize your Coffee Machine.
 
-Detailed installation docs available here: https://github.com/reckonsys/bigga
-
-
 OpenVPN
 -------
 
@@ -59,3 +56,8 @@ OpenVPN
     docker-compose run --rm openvpn ovpn_revokeclient $CLIENTNAME remove
 
 - https://github.com/kylemanna/docker-openvpn/blob/master/docs/docker-compose.md
+
+bigga
+-----
+
+Detailed installation docs available here: https://github.com/reckonsys/bigga
