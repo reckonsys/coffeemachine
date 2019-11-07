@@ -14,4 +14,4 @@ services:
     ports:
       - "1194:1194/udp"
     volumes:
-      - vol_openvpn
+      - vol_openvpn:/etc/openvpn
