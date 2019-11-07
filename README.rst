@@ -56,6 +56,7 @@ OpenVPN
     docker-compose run --rm openvpn ovpn_revokeclient $CLIENTNAME remove
 
 - https://github.com/kylemanna/docker-openvpn/blob/master/docs/docker-compose.md
+- https://github.com/jessfraz/dockerfiles/blob/master/coredns/Dockerfile
 
 bigga
 -----
