@@ -2,6 +2,7 @@ version: '3'
 
 volumes:
   vol_openvpn: {}
+  # vol_coredns: {}
 
 services:
 
@@ -15,3 +16,14 @@ services:
       - "1194:1194/udp"
     volumes:
       - vol_openvpn:/etc/openvpn
+
+  # coredns:
+  # env_file: .env
+  # build: coredns
+  # restart: always
+  # network_mode: host
+  # command: -conf /etc/coredns/Corefile
+  # ports:
+  # - 53:53/udp
+  # volumes:
+  # - vol_coredns:/etc/coredns

@@ -1,0 +1,5 @@
+.:53 {
+    file /etc/coredns/vpn.rsys vpn.rsys
+    forward . 8.8.8.8:53
+    log
+}
