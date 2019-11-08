@@ -1,0 +1,3 @@
+[submodule "taiga"]
+	path = taiga
+	url = git@github.com:docker-taiga/taiga.git
