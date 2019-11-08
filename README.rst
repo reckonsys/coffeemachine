@@ -15,7 +15,7 @@ Install these tools in your **coffeemachine**
 
 - OpenSteer
 - GitLab
-- Taiga
+- `Taiga <https://github.com/docker-taiga/taiga/>`_
 - Zulip
 - Odoo
 
