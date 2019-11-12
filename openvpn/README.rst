@@ -1,0 +1,25 @@
+OpenVPN
+-------
+
+::
+
+    docker-compose build openvpn
+
+    # Initialize the configuration files and certificates
+    docker-compose run --rm openvpn ovpn_genconfig -u udp://VPN.SERVERNAME.COM
+    docker-compose run --rm openvpn ovpn_initpki
+
+    docker-compose up -d openvpn
+
+    # CLIENTNAME='peter'
+    # Generate Client Certs
+    docker-compose run --rm openvpn easyrsa build-client-full $CLIENTNAME
+
+    # Retrieve the client configuration with embedded certificates
+    docker-compose run --rm openvpn ovpn_getclient $CLIENTNAME > $CLIENTNAME.ovpn
+
+    # Revoke a client certificate
+    docker-compose run --rm openvpn ovpn_revokeclient $CLIENTNAME remove
+
+- https://github.com/kylemanna/docker-openvpn/blob/master/docs/docker-compose.md
+- https://github.com/jessfraz/dockerfiles/blob/master/coredns/Dockerfile
