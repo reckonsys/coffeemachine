@@ -13,7 +13,7 @@ OpenVPN
 
     # CLIENTNAME='peter'
     # Generate Client Certs
-    docker-compose run --rm openvpn easyrsa build-client-full $CLIENTNAME
+    docker-compose run --rm openvpn easyrsa build-client-full $CLIENTNAME nopass
 
     # Retrieve the client configuration with embedded certificates
     docker-compose run --rm openvpn ovpn_getclient $CLIENTNAME > $CLIENTNAME.ovpn
