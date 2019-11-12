@@ -1,3 +1,0 @@
-[submodule "taiga"]
-	path = taiga
-	url = git@github.com:reckonsys/taiga.git

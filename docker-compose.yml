@@ -1,0 +1,53 @@
+version: '3'
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.177.57.0/24
+
+volumes:
+  vol_taigadb: {}
+  vol_taigafront: {}
+  vol_taigaback_conf: {}
+  vol_taigaback_media: {}
+
+services:
+
+  taigadb:
+    env_file: taiga.env
+    image: postgres
+    restart: unless-stopped
+    volumes:
+      - vol_taigadb:/var/lib/postgresql/data
+
+  taigarabbit:
+    env_file: taiga.env
+    restart: unless-stopped
+    image: dockertaiga/rabbit
+
+  taigafront:
+    env_file: taiga.env
+    restart: unless-stopped
+    image: dockertaiga/front
+    volumes:
+      - vol_taigafront:/taiga-conf
+
+  taigaevents:
+    env_file: taiga.env
+    restart: unless-stopped
+    image: dockertaiga/events
+    depends_on:
+      - taigarabbit
+
+  taigaback:
+    env_file: taiga.env
+    restart: unless-stopped
+    image: dockertaiga/back
+    depends_on:
+      - taigadb
+      - taigaevents
+    volumes:
+      - vol_taigaback_conf:/taiga-conf
+      - vol_taigaback_media:/taiga-media
