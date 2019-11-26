@@ -8,6 +8,7 @@ networks:
         - subnet: 172.177.57.0/24
 
 volumes:
+  vol_traefik: {}
   vol_taigadb: {}
   vol_taigafront: {}
   vol_taigaback_conf: {}
@@ -40,6 +41,13 @@ services:
     image: dockertaiga/events
     depends_on:
       - taigarabbit
+    expose:
+      - ${BACKEND_PORT}
+    labels:
+      - traefik.enable=true
+      - traefik.backend.domain=${BACKEND_DOMAIN}
+      - traefik.frontend.rule=Host:${BACKEND_DOMAIN}
+
 
   taigaback:
     env_file: taiga.env
@@ -51,3 +59,12 @@ services:
     volumes:
       - vol_taigaback_conf:/taiga-conf
       - vol_taigaback_media:/taiga-media
+
+  traefik:
+    env_file: .env
+    build: traefik
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - vol_traefik:/etc/traefik/acme/ # Defined in traefik/traefik.toml
+    ports:
+      - 0.0.0.0:80:80
