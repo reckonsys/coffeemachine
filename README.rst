@@ -37,3 +37,12 @@ bigga
 -----
 
 Detailed installation docs available here: https://github.com/reckonsys/bigga
+
+
+OpenVPN
+-------
+
+
+If docker fails to start after installing openvpn, uninstall openvpn, install docker-ce, make sure docker daemon is running and the re install openvpn again. Everything should work now.
+
+Have a look into `openvpn` folder to install openvpn

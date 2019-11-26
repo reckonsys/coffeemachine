@@ -1,6 +1,8 @@
 OpenVPN
 -------
 
+If docker fails to start after installing openvpn, uninstall openvpn, install docker-ce, make sure docker daemon is running and the re install openvpn again. Everything should work now.
+
 ::
 
     docker-compose build openvpn
