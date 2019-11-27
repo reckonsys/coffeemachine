@@ -13,6 +13,9 @@ volumes:
   vol_gogs_data: {}
   vol_drone_db_data: {}
   vol_drone_data: {}
+  vol_taiga_rabbit_data: {}
+  vol_taiga_db_data: {}
+  vol_taiga_back_media: {}
 
 services:
 
@@ -77,6 +80,42 @@ services:
       - drone
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+  taiga_rabbit:
+    env_file: .env
+    image: rabbitmq:latest
+    ports:
+      - 5672
+    volumes:
+      - vol_taiga_rabbit_data:/data
+
+  taiga_db:
+    env_file: .env
+    image: postgres:latest
+    ports:
+      - 5432
+    volumes:
+      - vol_taiga_db_data:/var/lib/postgresql/data/
+
+  taiga_back:
+    env_file: .env
+    build: taiga/back
+    command: gunicorn -b 127.0.0.1:${TAIGA_BACK_PORT} taiga.wsgi
+    expose:
+      - ${TAIGA_BACK_PORT}
+    environment:
+      - POSTGRES_HOST=taiga_db
+      - RABBIT_HOST=taiga_rabbit
+    # links:
+    depends_on:
+      - taiga_rabbit
+      - taiga_db
+    labels:
+      - traefik.enable=true
+      - traefik.backend.domain=${TAIGA_BACK_HOST}
+      - traefik.frontend.rule=Host:${TAIGA_BACK_HOST}
+    volumes:
+      - vol_taiga_back_media:/srv/taiga/back/media/user
 
   traefik:
     env_file: .env
