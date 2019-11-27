@@ -11,7 +11,6 @@ volumes:
   vol_traefik: {}
   vol_gogs_db_data: {}
   vol_gogs_data: {}
-  vol_gogs_repos: {}
   vol_drone_db_data: {}
   vol_drone_data: {}
 
@@ -34,7 +33,6 @@ services:
       - 3000
     volumes:
       - vol_gogs_data:/data
-      - vol_gogs_repos:/home/git/gogs-repositories
     labels:
       - traefik.port=3000
       - traefik.enable=true
