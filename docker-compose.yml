@@ -9,56 +9,72 @@ networks:
 
 volumes:
   vol_traefik: {}
-  vol_taigadb: {}
-  vol_taigafront: {}
-  vol_taigaback_conf: {}
-  vol_taigaback_media: {}
+  vol_gogs_db_data: {}
+  vol_gogs_data: {}
+  vol_gogs_repos: {}
+  vol_drone_db_data: {}
+  vol_drone_data: {}
 
 services:
 
-  taigadb:
-    env_file: taiga.env
-    image: postgres
-    restart: unless-stopped
+  gogs_db:
+    # image: postgres:9.1
+    env_file: .env
+    image: postgres:latest
+    ports:
+      - 5432
     volumes:
-      - vol_taigadb:/var/lib/postgresql/data
+      - vol_gogs_db_data:/var/lib/postgresql/data/
 
-  taigarabbit:
-    env_file: taiga.env
-    restart: unless-stopped
-    image: dockertaiga/rabbit
-
-  taigafront:
-    env_file: taiga.env
-    restart: unless-stopped
-    image: dockertaiga/front
-    volumes:
-      - vol_taigafront:/taiga-conf
-
-  taigaevents:
-    env_file: taiga.env
-    restart: unless-stopped
-    image: dockertaiga/events
+  gogs:
+    env_file: .env
+    image: gogs/gogs:latest
     depends_on:
-      - taigarabbit
+      - gogs_db
     expose:
-      - ${BACKEND_PORT}
+      - 3000
+      # I need to find a way to somehow expose posrt 22 through traefik
+      # - 10022:22
+    volumes:
+      - vol_gogs_data:/data
+      - vol_gogs_repos:/home/git/gogs-repositories
+    labels:
+      - traefik.port=3000
+      - traefik.enable=true
+      - traefik.backend.domain=${GOGS_DOMAIN}
+      - traefik.frontend.rule=Host:${GOGS_DOMAIN}
+
+  drone_db:
+    env_file: .env
+    image: postgres:latest
+    ports:
+      - 5432
+    volumes:
+      - vol_drone_db_data:/var/lib/postgresql/data/
+
+  drone:
+    env_file: .env
+    image: drone/drone:latest
+    depends_on:
+      - drone_db
+    expose:
+      - 8000
+    volumes:
+      - vol_drone_data:/var/lib/drone
     labels:
       - traefik.enable=true
-      - traefik.backend.domain=${BACKEND_DOMAIN}
-      - traefik.frontend.rule=Host:${BACKEND_DOMAIN}
+      - traefik.backend.domain=${DRONE_DOMAIN}
+      - traefik.frontend.rule=Host:${DRONE_DOMAIN}
 
-
-  taigaback:
-    env_file: taiga.env
-    restart: unless-stopped
-    image: dockertaiga/back
+  drone_agent:
+    # image: drone/drone:0.7
+    env_file: .env
+    image: drone/drone:latest
+    command: agent
     depends_on:
-      - taigadb
-      - taigaevents
+      - drone
     volumes:
-      - vol_taigaback_conf:/taiga-conf
-      - vol_taigaback_media:/taiga-media
+      - /var/run/docker.sock:/var/run/docker.sock
 
   traefik:
     env_file: .env
@@ -67,4 +83,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - vol_traefik:/etc/traefik/acme/ # Defined in traefik/traefik.toml
     ports:
-      - 0.0.0.0:80:80
+      - 80:80
+      - 443:443
+      - 8080:8080

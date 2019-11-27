@@ -1,5 +1,5 @@
 logLevel = "INFO"
-defaultEntryPoints = ["https", "http"]
+defaultEntryPoints = ["http"]
 
 [retry]
 
@@ -19,7 +19,7 @@ level = "DEBUG"
 [api]
 # entryPoint = "traefik"
 # rule = "Host(`traefik.domain.com`)"
-dashboard = false
+dashboard = true
 
 [ping]
 
@@ -28,21 +28,21 @@ dashboard = false
   # http should be redirected to https
   [entryPoints.http]
   address = ":80"
-    [entryPoints.http.redirect]
-    entryPoint = "https"
+  #   [entryPoints.http.redirect]
+  #   entryPoint = "https"
   # https is the default
-  [entryPoints.https]
-  address = ":443"
-    [entryPoints.https.tls]
+  # [entryPoints.https]
+  # address = ":443"
+  #   [entryPoints.https.tls]
 
-[acme]
-email = "dhilip@reckonsys.com"
-storage = "/etc/traefik/acme/acme.json"
-entryPoint = "https"
-acmeLogging = true
-onHostRule = true
+# [acme]
+# email = "dhilip@reckonsys.com"
+# storage = "/etc/traefik/acme/acme.json"
+# entryPoint = "https"
+# acmeLogging = true
+# onHostRule = true
 # caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
 # Default: "https://acme-v02.api.letsencrypt.org/directory"
 
-  [acme.dnsChallenge]
-  provider = "digitalocean"
+#   [acme.dnsChallenge]
+#   provider = "digitalocean"
