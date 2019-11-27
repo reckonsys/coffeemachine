@@ -18,7 +18,6 @@ volumes:
 services:
 
   gogs_db:
-    # image: postgres:9.1
     env_file: .env
     image: postgres:latest
     ports:
@@ -33,8 +32,6 @@ services:
       - gogs_db
     expose:
       - 3000
-      # I need to find a way to somehow expose posrt 22 through traefik
-      # - 10022:22
     volumes:
       - vol_gogs_data:/data
       - vol_gogs_repos:/home/git/gogs-repositories
@@ -69,8 +66,8 @@ services:
   drone_agent:
     # image: drone/drone:0.7
     env_file: .env
-    image: drone/drone:latest
-    command: agent
+    image: drone/agent:latest
+    # command: agent
     depends_on:
       - drone
     volumes:
