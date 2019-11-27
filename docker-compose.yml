@@ -65,10 +65,16 @@ services:
       - traefik.frontend.rule=Host:${DRONE_SERVER_HOST}
 
   drone_agent:
-    # image: drone/drone:0.7
     env_file: .env
     image: drone/agent:latest
-    # command: agent
+    depends_on:
+      - drone
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  drone_runner:
+    env_file: .env
+    image: drone/drone-runner-docker:latest
     depends_on:
       - drone
     volumes:
