@@ -54,14 +54,15 @@ services:
     image: drone/drone:latest
     depends_on:
       - drone_db
+      - gogs
     expose:
       - 8000
     volumes:
       - vol_drone_data:/var/lib/drone
     labels:
       - traefik.enable=true
-      - traefik.backend.domain=${DRONE_DOMAIN}
-      - traefik.frontend.rule=Host:${DRONE_DOMAIN}
+      - traefik.backend.domain=${DRONE_SERVER_HOST}
+      - traefik.frontend.rule=Host:${DRONE_SERVER_HOST}
 
   drone_agent:
     # image: drone/drone:0.7
