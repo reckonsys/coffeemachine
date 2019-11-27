@@ -14,7 +14,7 @@ Method 2
 Install these tools in your **coffeemachine**
 
 - OpenSteer
-- `GitLab <https://docs.gitlab.com/omnibus/docker/#install-gitlab-using-docker-compose>`_
+- `Gogs <https://gogs.io/>`_
 - `Taiga <https://github.com/docker-taiga/taiga/>`_
 - Odoo
 - Zulip
