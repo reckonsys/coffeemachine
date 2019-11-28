@@ -23,6 +23,7 @@ services:
 
   gogs_db:
     env_file: .env
+    restart: always
     image: postgres:latest
     ports:
       - 5432
@@ -31,6 +32,7 @@ services:
 
   gogs:
     env_file: .env
+    restart: always
     image: gogs/gogs:latest
     depends_on:
       - gogs_db
@@ -46,6 +48,7 @@ services:
 
   drone_db:
     env_file: .env
+    restart: always
     image: postgres:latest
     ports:
       - 5432
@@ -54,6 +57,7 @@ services:
 
   drone:
     env_file: .env
+    restart: always
     image: drone/drone:latest
     depends_on:
       - drone_db
@@ -71,6 +75,7 @@ services:
 
   drone_runner:
     env_file: .env
+    restart: always
     image: drone/drone-runner-docker:latest
     depends_on:
       - drone
@@ -79,6 +84,7 @@ services:
 
   taiga_rabbit:
     env_file: .env
+    restart: always
     image: rabbitmq:latest
     ports:
       - 5672
@@ -87,6 +93,7 @@ services:
 
   taiga_db:
     env_file: .env
+    restart: always
     image: postgres:latest
     ports:
       - 5432
@@ -95,6 +102,7 @@ services:
 
   taiga_back:
     env_file: .env
+    restart: always
     build:
       context: taiga/back
       args:
@@ -117,6 +125,7 @@ services:
 
   taiga_events:
     env_file: .env
+    restart: always
     build:
       context: taiga/events
       args:
@@ -136,6 +145,7 @@ services:
 
   taiga_front:
     env_file: .env
+    restart: always
     command: nginx -g 'daemon off;'
     build:
       context: taiga/front
@@ -157,6 +167,7 @@ services:
 
   odoo_db:
     env_file: .env
+    restart: always
     image: postgres:latest
     ports:
       - 5432
@@ -186,6 +197,7 @@ services:
 
   traefik:
     env_file: .env
+    restart: always
     build: traefik
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
