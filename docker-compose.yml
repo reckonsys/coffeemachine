@@ -16,6 +16,8 @@ volumes:
   vol_taiga_rabbit_data: {}
   vol_taiga_db_data: {}
   vol_taiga_back_media: {}
+  vol_odoo_data: {}
+  vol_odoo_db_data: {}
 
 services:
 
@@ -149,7 +151,6 @@ services:
         TAIGA_BACK_HOST: $TAIGA_BACK_HOST
         TAIGA_EVENTS_HOST: $TAIGA_EVENTS_HOST
         TAIGA_EVENTS_SCHEME: $TAIGA_EVENTS_SCHEME
-
     expose:
       - ${TAIGA_FRONT_PORT}
     depends_on:
@@ -159,6 +160,29 @@ services:
       - traefik.enable=true
       - traefik.backend.domain=${TAIGA_FRONT_HOST}
       - traefik.frontend.rule=Host:${TAIGA_FRONT_HOST}
+
+  odoo_db:
+    env_file: .env
+    image: postgres:latest
+    ports:
+      - 5432
+    volumes:
+      - vol_odoo_db_data:/var/lib/postgresql/data/
+
+  odoo:
+    image: odoo:latest
+    depends_on:
+      - odoo_db
+    expose:
+      - ${ODOO_PORT}
+    volumes:
+      - vol_odoo_data:/var/lib/odoo
+      # - ./config:/etc/odoo
+      # - ./addons:/mnt/extra-addons
+    labels:
+      - traefik.enable=true
+      - traefik.backend.domain=${ODOO_HOST}
+      - traefik.frontend.rule=Host:${ODOO_HOST}
 
   traefik:
     env_file: .env
