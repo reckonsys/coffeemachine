@@ -35,7 +35,7 @@ services:
     depends_on:
       - gogs_db
     expose:
-      - 3000
+      - ${GOGS_PORT}
     volumes:
       - vol_gogs_data:/data
     labels:
@@ -59,21 +59,15 @@ services:
       - drone_db
       - gogs
     expose:
-      - 8000
+      - ${DRONE_PORT}
+    environment:
+      - DRONE_GOGS_SERVER=http://gogs:${GOGS_PORT}
     volumes:
       - vol_drone_data:/var/lib/drone
     labels:
       - traefik.enable=true
       - traefik.backend.domain=${DRONE_SERVER_HOST}
       - traefik.frontend.rule=Host:${DRONE_SERVER_HOST}
-
-  drone_agent:
-    env_file: .env
-    image: drone/agent:latest
-    depends_on:
-      - drone
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
 
   drone_runner:
     env_file: .env
