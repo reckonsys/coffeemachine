@@ -18,5 +18,3 @@ RUN apk --no-cache add python3 gettext postgresql-dev libxslt-dev libxml2-dev li
 WORKDIR /srv/taiga/back
 
 COPY config.py settings/local.py
-
-RUN ln -sf /taiga-media media

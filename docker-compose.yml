@@ -100,7 +100,7 @@ services:
   taiga_back:
     env_file: .env
     build: taiga/back
-    command: gunicorn -b 127.0.0.1:${TAIGA_BACK_PORT} taiga.wsgi
+    command: gunicorn -b 0.0.0.0:${TAIGA_BACK_PORT} taiga.wsgi
     expose:
       - ${TAIGA_BACK_PORT}
     environment:
@@ -112,6 +112,7 @@ services:
       - taiga_db
     labels:
       - traefik.enable=true
+      - traefik.port=${TAIGA_BACK_PORT}
       - traefik.backend.domain=${TAIGA_BACK_HOST}
       - traefik.frontend.rule=Host:${TAIGA_BACK_HOST}
     volumes:
