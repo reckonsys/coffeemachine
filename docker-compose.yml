@@ -166,6 +166,8 @@ services:
     image: postgres:latest
     ports:
       - 5432
+    environment:
+      - POSTGRES_DB=postgres
     volumes:
       - vol_odoo_db_data:/var/lib/postgresql/data/
 
@@ -175,6 +177,10 @@ services:
       - odoo_db
     expose:
       - ${ODOO_PORT}
+    environment:
+      - HOST=odoo_db
+      - USER=$POSTGRES_USER
+      - PASSWORD=$POSTGRES_PASSWORD
     volumes:
       - vol_odoo_data:/var/lib/odoo
       # - ./config:/etc/odoo
