@@ -119,6 +119,25 @@ services:
     volumes:
       - vol_taiga_back_media:/srv/taiga/back/media/user
 
+  taiga_events:
+    env_file: .env
+    build:
+      context: taiga/events
+      args:
+        RABBIT_HOST: taiga_rabbit
+        RABBITMQ_DEFAULT_VHOST: $RABBITMQ_DEFAULT_VHOST
+        TAIGA_EVENTS_PORT: $TAIGA_EVENTS_PORT
+        TAIGA_SECRET: $TAIGA_SECRET
+    command: coffee index.coffee
+    expose:
+      - ${TAIGA_EVENTS_PORT}
+    depends_on:
+      - taiga_rabbit
+    labels:
+      - traefik.enable=true
+      - traefik.backend.domain=${TAIGA_EVENTS_HOST}
+      - traefik.frontend.rule=Host:${TAIGA_EVENTS_HOST}
+
   taiga_front:
     env_file: .env
     command: nginx -g 'daemon off;'

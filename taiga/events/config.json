@@ -1,0 +1,7 @@
+{
+    "url": "amqp://guest:guest@RABBIT_HOST:5672/RABBITMQ_DEFAULT_VHOST",
+    "secret": "TAIGA_SECRET",
+    "webSocketServer": {
+        "port": TAIGA_EVENTS_PORT
+    }
+}

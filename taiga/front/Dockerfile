@@ -18,7 +18,7 @@ RUN apk --no-cache add git \
 WORKDIR /srv/taiga/front/dist
 
 COPY nginx.conf /etc/nginx/conf.d/
-COPY conf.json conf.json
+COPY conf.json .
 
 RUN sed -e "s/TAIGA_SCHEME/${TAIGA_SCHEME}/g" \
 		-e "s/TAIGA_BACK_HOST/${TAIGA_BACK_HOST}/g" \
