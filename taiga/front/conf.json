@@ -1,0 +1,16 @@
+{
+    "api": "TAIGA_SCHEME://TAIGA_BACK_HOST/api/v1/",
+    "eventsUrl": "TAIGA_EVENTS_SCHEME://TAIGA_EVENTS_HOST/events/",
+    "eventsMaxMissedHeartbeats": 5,
+    "eventsHeartbeatIntervalTime": 15000,
+    "debug": true,
+    "debugInfo": false,
+    "defaultLanguage": "en",
+    "publicRegisterEnabled": false,
+    "gravatar": true,
+    "feedbackEnabled": false,
+    "privacyPolicyUrl": null,
+    "termsOfServiceUrl": null,
+    "maxUploadFileSize": null,
+    "contribPlugins": []
+}

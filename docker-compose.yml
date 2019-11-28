@@ -99,24 +99,47 @@ services:
 
   taiga_back:
     env_file: .env
-    build: taiga/back
+    build:
+      context: taiga/back
+      args:
+        TAIGA_VERSION: $TAIGA_VERSION
     command: gunicorn -b 0.0.0.0:${TAIGA_BACK_PORT} taiga.wsgi
     expose:
       - ${TAIGA_BACK_PORT}
     environment:
       - POSTGRES_HOST=taiga_db
       - RABBIT_HOST=taiga_rabbit
-    # links:
+    depends_on:
+      - taiga_db
+      - taiga_rabbit
+    labels:
+      - traefik.enable=true
+      - traefik.backend.domain=${TAIGA_BACK_HOST}
+      - traefik.frontend.rule=Host:${TAIGA_BACK_HOST}
+    volumes:
+      - vol_taiga_back_media:/srv/taiga/back/media/user
+
+  taiga_front:
+    env_file: .env
+    command: nginx -g 'daemon off;'
+    build:
+      context: taiga/front
+      args:
+        TAIGA_SCHEME: $TAIGA_SCHEME
+        TAIGA_VERSION: $TAIGA_VERSION
+        TAIGA_BACK_HOST: $TAIGA_BACK_HOST
+        TAIGA_EVENTS_HOST: $TAIGA_EVENTS_HOST
+        TAIGA_EVENTS_SCHEME: $TAIGA_EVENTS_SCHEME
+
+    expose:
+      - ${TAIGA_FRONT_PORT}
     depends_on:
       - taiga_rabbit
       - taiga_db
     labels:
       - traefik.enable=true
-      - traefik.port=${TAIGA_BACK_PORT}
-      - traefik.backend.domain=${TAIGA_BACK_HOST}
-      - traefik.frontend.rule=Host:${TAIGA_BACK_HOST}
-    volumes:
-      - vol_taiga_back_media:/srv/taiga/back/media/user
+      - traefik.backend.domain=${TAIGA_FRONT_HOST}
+      - traefik.frontend.rule=Host:${TAIGA_FRONT_HOST}
 
   traefik:
     env_file: .env
