@@ -1,0 +1,20 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+neovim = "*"
+ipdb = "*"
+ipython = "*"
+flake8 = "*"
+
+[packages]
+invoke = "*"
+bunch = "*"
+requests = "*"
+taiga-client = {editable = true,path = "./../taiga-python-client"}
+jira = "*"
+
+[requires]
+python_version = "3.7"
