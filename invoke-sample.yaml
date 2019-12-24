@@ -1,0 +1,10 @@
+debug: true
+run:
+  echo: true
+j2t:
+  jira_user: user@jira.com
+  jira_pass: jirapass
+  jira_host: https://example.atlassian.net
+  taiga_user: admin
+  taiga_pass: 123123
+  taiga_host: http://taigaapi.reckonsys.xyz

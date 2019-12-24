@@ -1,4 +1,4 @@
 *.env
 *.ovpn
-coffeemachine.yaml
+invoke.yaml
 .venv/
