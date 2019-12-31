@@ -16,7 +16,7 @@ Install these tools in your **coffeemachine**
 - `Gogs <https://gogs.io/>`_
 - `Taiga <https://taiga.io/>`_
 - `Odoo <https://www.odoo.com/>`_
-- `OpenSteer <https://https://github.com/reckonsys/opensteer>`_
+- `OpenSteer <https://github.com/reckonsys/opensteer>`_
 
 How to install those?
 ---------------------
