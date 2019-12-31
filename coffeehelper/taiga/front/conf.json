@@ -6,7 +6,7 @@
     "debug": true,
     "debugInfo": false,
     "defaultLanguage": "en",
-    "publicRegisterEnabled": false,
+    "publicRegisterEnabled": true,
     "gravatar": true,
     "feedbackEnabled": false,
     "privacyPolicyUrl": null,

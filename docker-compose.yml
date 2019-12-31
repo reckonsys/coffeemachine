@@ -13,9 +13,6 @@ volumes:
   vol_gogs_data: {}
   vol_drone_db_data: {}
   vol_drone_data: {}
-  vol_taiga_rabbit_data: {}
-  vol_taiga_db_data: {}
-  vol_taiga_back_media: {}
   vol_odoo_data: {}
   vol_odoo_db_data: {}
 
@@ -81,89 +78,6 @@ services:
       - drone
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-
-  taiga_rabbit:
-    env_file: .env
-    restart: always
-    image: rabbitmq:latest
-    ports:
-      - 5672
-    volumes:
-      - vol_taiga_rabbit_data:/data
-
-  taiga_db:
-    env_file: .env
-    restart: always
-    image: postgres:latest
-    ports:
-      - 5432
-    volumes:
-      - vol_taiga_db_data:/var/lib/postgresql/data/
-
-  taiga_back:
-    env_file: .env
-    restart: always
-    build:
-      context: taiga/back
-      args:
-        TAIGA_VERSION: $TAIGA_VERSION
-    command: gunicorn -b 0.0.0.0:${TAIGA_BACK_PORT} taiga.wsgi
-    expose:
-      - ${TAIGA_BACK_PORT}
-    environment:
-      - POSTGRES_HOST=taiga_db
-      - RABBIT_HOST=taiga_rabbit
-    depends_on:
-      - taiga_db
-      - taiga_rabbit
-    labels:
-      - traefik.enable=true
-      - traefik.backend.domain=${TAIGA_BACK_HOST}
-      - traefik.frontend.rule=Host:${TAIGA_BACK_HOST}
-    volumes:
-      - vol_taiga_back_media:/srv/taiga/back/media/user
-
-  taiga_events:
-    env_file: .env
-    restart: always
-    build:
-      context: taiga/events
-      args:
-        RABBIT_HOST: taiga_rabbit
-        RABBITMQ_DEFAULT_VHOST: $RABBITMQ_DEFAULT_VHOST
-        TAIGA_EVENTS_PORT: $TAIGA_EVENTS_PORT
-        TAIGA_SECRET: $TAIGA_SECRET
-    command: coffee index.coffee
-    expose:
-      - ${TAIGA_EVENTS_PORT}
-    depends_on:
-      - taiga_rabbit
-    labels:
-      - traefik.enable=true
-      - traefik.backend.domain=${TAIGA_EVENTS_HOST}
-      - traefik.frontend.rule=Host:${TAIGA_EVENTS_HOST}
-
-  taiga_front:
-    env_file: .env
-    restart: always
-    command: nginx -g 'daemon off;'
-    build:
-      context: taiga/front
-      args:
-        TAIGA_SCHEME: $TAIGA_SCHEME
-        TAIGA_VERSION: $TAIGA_VERSION
-        TAIGA_BACK_HOST: $TAIGA_BACK_HOST
-        TAIGA_EVENTS_HOST: $TAIGA_EVENTS_HOST
-        TAIGA_EVENTS_SCHEME: $TAIGA_EVENTS_SCHEME
-    expose:
-      - ${TAIGA_FRONT_PORT}
-    depends_on:
-      - taiga_rabbit
-      - taiga_db
-    labels:
-      - traefik.enable=true
-      - traefik.backend.domain=${TAIGA_FRONT_HOST}
-      - traefik.frontend.rule=Host:${TAIGA_FRONT_HOST}
 
   odoo_db:
     env_file: .env
