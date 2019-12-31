@@ -13,11 +13,10 @@ Method 2
 
 Install these tools in your **coffeemachine**
 
-- OpenSteer
 - `Gogs <https://gogs.io/>`_
-- `Taiga <https://github.com/docker-taiga/taiga/>`_
-- Odoo
-- Zulip
+- `Taiga <https://taiga.io/>`_
+- `Odoo <https://www.odoo.com/>`_
+- `OpenSteer <https://https://github.com/reckonsys/opensteer>`_
 
 How to install those?
 ---------------------
