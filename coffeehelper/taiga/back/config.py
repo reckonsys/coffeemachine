@@ -1,13 +1,12 @@
 from .common import *
 from os import environ
 
-PUBLIC_REGISTER_ENABLED = True
 DEBUG = False
 TEMPLATE_DEBUG = False
 
-SECRET_KEY = environ['TAIGA_SECRET']
-SCHEME = environ['TAIGA_SCHEME']
-HOST = environ['TAIGA_BACK_HOST']
+SECRET_KEY = environ.get('TAIGA_SECRET', 'not-so-secret')
+SCHEME = environ.get('TAIGA_SCHEME')
+HOST = environ.get('TAIGA_BACK_HOST')
 
 MEDIA_URL = f"{SCHEME}://{HOST}/media/"
 STATIC_URL = f"{SCHEME}://{HOST}/static/"
@@ -20,28 +19,33 @@ SITES["front"]["domain"] = HOST
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": environ['POSTGRES_DB'],
-        "HOST": environ["POSTGRES_HOST"],
-        "USER": environ["POSTGRES_USER"],
-        "PASSWORD": environ["POSTGRES_PASSWORD"]
+        "NAME": environ.get('POSTGRES_DB'),
+        "HOST": environ.get("POSTGRES_HOST"),
+        "USER": environ.get("POSTGRES_USER"),
+        "PASSWORD": environ.get("POSTGRES_PASSWORD")
     }
 }
 
-#CHANGE_NOTIFICATIONS_MIN_INTERVAL = 300 #seconds
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DEFAULT_FROM_EMAIL = environ['DEFAULT_FROM_EMAIL']
-EMAIL_USE_TLS = environ['EMAIL_USE_TLS'] == '1'
-EMAIL_USE_SSL = environ['EMAIL_USE_SSL'] == '1'
-EMAIL_HOST = environ['EMAIL_HOST']
-EMAIL_PORT =  int(environ['EMAIL_PORT'])
-EMAIL_HOST_USER = environ['EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = environ['EMAIL_HOST_PASSWORD']
+DEFAULT_FROM_EMAIL = environ.get('DEFAULT_FROM_EMAIL')
+EMAIL_USE_TLS = environ.get('EMAIL_USE_TLS') == '1'
+EMAIL_USE_SSL = environ.get('EMAIL_USE_SSL') == '1'
+EMAIL_HOST = environ.get('EMAIL_HOST')
+EMAIL_PORT =  int(environ.get('EMAIL_PORT', 0))
+EMAIL_HOST_USER = environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = environ.get('EMAIL_HOST_PASSWORD')
 
 EVENTS_PUSH_BACKEND = "taiga.events.backends.rabbitmq.EventsPushBackend"
-RABBIT_HOST=environ['RABBIT_HOST']
-RABBIT_VHOST=environ['RABBITMQ_DEFAULT_VHOST']
+RABBIT_HOST=environ.get('RABBIT_HOST')
+RABBIT_VHOST=environ.get('RABBITMQ_DEFAULT_VHOST')
 EVENTS_PUSH_BACKEND_OPTIONS = {
     "url": f"amqp://guest:guest@{RABBIT_HOST}:5672/{RABBIT_VHOST}"}
 
-PUBLIC_REGISTER_ENABLED = True
-USER_EMAIL_ALLOWED_DOMAINS = ["reckonsys.com", "reckonsys.xyz"]
+PUBLIC_REGISTER_ENABLED = False
+MIDDLEWARE_CLASSES = ['whitenoise.middleware.WhiteNoiseMiddleware'] + MIDDLEWARE_CLASSES
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+INSTALLED_APPS = [
+    'jet.dashboard',
+    'jet',
+] + INSTALLED_APPS
