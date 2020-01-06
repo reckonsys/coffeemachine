@@ -1,5 +1,6 @@
 version: '3'
 
+# networks is required because of OpenVPN Client problem
 networks:
   default:
     driver: bridge
