@@ -1,0 +1,17 @@
+version: '3'
+
+volumes:
+  vol_openvpn: {}
+
+services:
+
+  openvpn:
+    build: .
+    # env_file: .env
+    restart: always
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "1194:1194/udp"
+    volumes:
+      - vol_openvpn:/etc/openvpn
