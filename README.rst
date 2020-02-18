@@ -45,3 +45,8 @@ OpenVPN
 If docker fails to start after installing openvpn, uninstall openvpn, install docker-ce, make sure docker daemon is running and the re install openvpn again. Everything should work now.
 
 Have a look into `openvpn` folder to install openvpn
+
+Gogs:
+-----
+
+When configuring gogs for the first time, don't select the "enable internal ssh daemon" option. Keep it unchecked. Or else the Gogs will fail to start.
