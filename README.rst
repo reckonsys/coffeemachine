@@ -1,7 +1,9 @@
 coffeemachine
 =============
 
-Optimizing Coffee Machine Utilization
+Install Taiga, Gogs, Drone, Odoo, OpenSteer & OpenVPN on your coffeemachine with docker
+
+This is how you effectively utilize your coffeemachine :stuck_toungue_out:
 
 Method 1
 --------

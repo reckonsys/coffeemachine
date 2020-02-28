@@ -8,10 +8,10 @@ exposedByDefault = false
 
 
 [Global]
-debug = true
+debug = false
 
 [log]
-level = "DEBUG"
+level = "INFO"
 
 [accessLog]
 # format = "json"

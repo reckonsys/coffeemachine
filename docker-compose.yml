@@ -37,13 +37,15 @@ services:
     image: gogs/gogs:latest
     depends_on:
       - gogs_db
+    ports:
+      - "0.0.0.0:3333:2222"
     expose:
       - ${GOGS_PORT}
     volumes:
       - vol_gogs_data:/data
     labels:
-      - traefik.port=3000
       - traefik.enable=true
+      - traefik.port=${GOGS_PORT}
       - traefik.backend.domain=${GOGS_DOMAIN}
       - traefik.frontend.rule=Host:${GOGS_DOMAIN}
 
@@ -206,4 +208,5 @@ services:
     ports:
       - 80:80
       - 443:443
+      - 2222:2222
       - 8080:8080
